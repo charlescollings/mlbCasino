@@ -20,11 +20,12 @@ app.use(routes);
 mongoose.Promise = global.Promise;
 // Connect to the Mongo DB
 mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost/mlbCasino"
-  // {
-  //   useMongoClient: true
-  // }
+  process.env.MONGODB_URI || "mongodb://localhost/mlbcasino",
+  {
+    useMongoClient: true
+  }
 );
+
 
 // Start the API server
 app.listen(PORT, () =>
