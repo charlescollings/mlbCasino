@@ -1,10 +1,35 @@
-.portal {
+.wrapper {
+    display: flex;
+    justify-content: space-evenly;
+
     width: 100%;
     text-align: center;
-    font-size: 3rem;
+    font-size: 2rem;
     text-decoration: underline;
     color: #2A77AE;
     margin-bottom: 0px;
     background-color:red;
-    height: 400px;
+    height: 500px;
+  }
+
+  .insideDiv1 {
+    background-color: green;
+    margin: auto;
+    height: 300px;
+  }
+
+  .insideDiv2 {
+    background-color: orange;
+    margin: auto;
+    height: 300px;
+  }
+
+  .insideDiv3 {
+    background-color:purple;
+    margin: auto;
+    height: 300px;
+  }
+
+  .gameRules {
+    background-color:white;
   }
