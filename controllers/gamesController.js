@@ -19,22 +19,14 @@ module.exports = {
           putoutPlayerJerseyNumber: response.data.game.innings[1].halfs[0].events[1].at_bat.events[4].fielders[0].jersey_number
         };
         // response.data.game.innings[1](array of 10 inning objects, element 0 is that starting lineups).halfs[0](array of 2 half inning objects).events[1](an array of each at bat).at_bat.events[4].fielders[0].jersey_number
+        var query = games,
+        update = { expire: new Date() },
+        options = { upsert: true, new: true, setDefaultsOnInsert: true };
+
         db.Games
-          .create(games)
-          .then(dbArticle => res.json(dbArticle))
-          .catch(err => res.status(422).json(err));
-    
-      //   db.Article
-      //     .find()
-      //     .then(dbArticles =>
-      //       response.data.response.docs.filter(article =>
-      //         dbArticles.every(
-      //           dbArticle => dbArticle._id.toString() !== article._id
-      //         )
-      //       )
-      //     )
-      //     .then(articles => res.json(articles))
-      //     .catch(err => res.status(422).json(err));
+        .findOneAndUpdate(query, update, options)
+        .then(dbArticle => res.json(dbArticle))
+        .catch(err => res.status(422).json(err));
       });
   }
 };

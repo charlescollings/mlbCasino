@@ -2,8 +2,8 @@ import axios from "axios";
 
 export default {
   // Gets articles from the API
-  getGames: function(params) {
-    return axios.get("/api/games");
+  getGamesSchedule: function(params) {
+    return axios.get("/api/gamesSchedule");
   },
   // // Gets all saved articles
   // getSavedArticles: function() {

@@ -11,7 +11,8 @@ const App = () => (
   <Router>
     <div>
       <Header>MLB Casino</Header>
-      <GameBoard>Gameboard section where user chooses game to play on</GameBoard>
+      <GameBoard component={GameBoard}>
+      </GameBoard>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/MlbMatchGame" component={MlbMatchGame} />

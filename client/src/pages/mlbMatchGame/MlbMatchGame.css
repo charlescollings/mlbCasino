@@ -1,0 +1,35 @@
+.div1 {
+    background-color: blue;
+    border-radius: 2px;
+    height: 300px;
+    margin: 1rem;
+    position: relative;
+    width: 325px;
+    box-shadow: 0 3px 6px #999, 0 3px 6px #999;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .div2 {
+    background-color: orange;
+    border-radius: 2px;
+    height: 300px;
+    margin: 1rem;
+    position: relative;
+    width: 325px;
+    box-shadow: 0 3px 6px #999, 0 3px 6px #999;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .div3 {
+    background-color: purple;
+    border-radius: 2px;
+    height: 300px;
+    margin: 1rem;
+    position: relative;
+    width: 325px;
+    box-shadow: 0 3px 6px #999, 0 3px 6px #999;
+    text-align: left;
+    cursor: pointer;
+  }
