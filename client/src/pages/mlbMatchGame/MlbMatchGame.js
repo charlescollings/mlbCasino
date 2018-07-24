@@ -1,16 +1,35 @@
 import React, { Component } from 'react';
 import "./MlbMatchGame.css";
+import gamesScheduleData from "../../../src/data/gamesScheduleData"
+// import gamesJuly21 from "../../data/gamesJuly21"
 
 class MlbMatchGame extends Component {
-
     state = {
         dealerNumber: 0,
         userNumber: 0,
         playResult: "No Current Play",
         gameNumber: 0,
-   
+        gamesScheduleData: {
+            games: []
+        }
+        // chosenGame: 
+
     };
+
     // do i need componentDidMount sets/hydrates the initial state if I need info to populate on pageload
+    componentDidMount() {
+        // when component loads grab the daily game schedule and populate dropdown
+        // API call that looks at date and pulls the daily schedule object
+        this.setState({
+            gamesScheduleData: gamesScheduleData,
+        });
+    }
+
+    loadGameData = (event, id) => {
+        event.preventDefault();
+        console.log(id);
+        // loop through games file to find file with id that matches id of clicked game
+    }
 
     // methods 
     pressPlay = event => {
@@ -25,7 +44,7 @@ class MlbMatchGame extends Component {
             gameNumber: gameNumber,
             playResult: "Pending..."
         });
-        
+
         setTimeout(() => {
             this.runGame(randomUserNumber, randomDealerNumber, gameNumber);
         }, 3000);
@@ -48,6 +67,8 @@ class MlbMatchGame extends Component {
             });
         }
     }
+
+
         // populate those numbers onto "your number" and "dealer number"
         // set play status to pending
         // turn on API listenser, or make API call every few seconds
@@ -68,6 +89,23 @@ class MlbMatchGame extends Component {
                         </div>
 
                         <div className="col border border-success rounded div2">
+                            <div className="dropdown">
+                              <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Choose MLB game to play on
+                              </button>
+                              <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
+                              {this.state.gamesScheduleData.games.map(game => (
+                                <button 
+                                    className="dropdown-item" 
+                                    type="button"
+                                    key={game.id} 
+                                    onClick={(event) => this.loadGameData(event, game.id)}
+                                 >  
+                                 {game.away.abbr} at {game.home.abbr}                              
+                                 </button>
+                              ))}
+                              </div>
+                            </div>
                             <p>Next Available Play</p>
                             <div className="pull-right">
                                 <button

@@ -31,7 +31,8 @@
     "if-env": "^1.0.4",
     "mongoose": "^5.2.3",
     "node-mlb-api": "0.0.2-6",
-    "nodemon": "^1.18.2"
+    "nodemon": "^1.18.2",
+    "popper.js": "^1.14.3",
+    "tooltip.js": "^1.2.0"
   }
 }
-
