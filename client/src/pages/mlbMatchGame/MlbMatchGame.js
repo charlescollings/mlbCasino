@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "./MlbMatchGame.css";
-import gamesScheduleData from "../../../src/data/gamesScheduleData"
-// import gamesJuly21 from "../../data/gamesJuly21"
+// import gamesScheduleData from "../../../src/data/gamesScheduleData"
+import API from "../../utils/API"
 
 class MlbMatchGame extends Component {
     state = {
@@ -9,29 +9,49 @@ class MlbMatchGame extends Component {
         userNumber: 0,
         playResult: "No Current Play",
         gameNumber: 0,
-        gamesScheduleData: {
-            games: []
-        }
-        // chosenGame: 
-
+        dailyGameSchedule: [],
+        chosenGameInningsData: [],
+        previousOutInGame: [],
+        currentInning: 1,
+        currentGameHomeTeam: [],
+        currentGameAwayTeam: [],
+        currentHalfInning: 0,
+        currentOuts: []
     };
 
     // do i need componentDidMount sets/hydrates the initial state if I need info to populate on pageload
     componentDidMount() {
         // when component loads grab the daily game schedule and populate dropdown
         // API call that looks at date and pulls the daily schedule object
-        this.setState({
-            gamesScheduleData: gamesScheduleData,
-        });
-    }
-
+        API.getDailyGameSchedule()
+        .then(res => {
+            this.setState({
+              dailyGameSchedule: res.data.games,
+            })
+        })
+          .catch(err => console.log(err));
+    };
+    
     loadGameData = (event, id) => {
         event.preventDefault();
-        console.log(id);
-        // loop through games file to find file with id that matches id of clicked game
+        // console.log(id);
+        API.getGameInfo(id)
+        .then(res => {
+           
+            this.setState({
+              chosenGameInningsData: res.data.game.innings,
+              currentGameHomeTeam: res.data.game.scoring.home.abbr,
+              currentGameAwayTeam: res.data.game.scoring.away.abbr,
+              currentInning: res.data.game.innings.length-1,
+              currentHalfInning: res.data.game.innings[res.data.game.innings.length-1].halfs[1].events.length ? 1 : 0,
+              currentOuts: res.data.game.innings[res.data.game.innings.length-1].halfs[this.state.currentHalfInning].events[0].at_bat.description
+              // previousOutInGame: res.data.game.innings[res.data.game.innings(innnings.length)]
+            })
+            
+        })
+          .catch(err => console.log(err));
     }
 
-    // methods 
     pressPlay = event => {
         // event.preventDefault();
         // generate randon number for user and dealer
@@ -67,18 +87,6 @@ class MlbMatchGame extends Component {
             });
         }
     }
-
-
-        // populate those numbers onto "your number" and "dealer number"
-        // set play status to pending
-        // turn on API listenser, or make API call every few seconds
-        // once jersey number data is rec'd then calculate winner of game
-        // update next play div
-        // update last play div
-        // update last 10 numbers div
-        // update available numbers div?
-        // update account $balance
-    
     
         render() {
             return (
@@ -94,7 +102,7 @@ class MlbMatchGame extends Component {
                                 Choose MLB game to play on
                               </button>
                               <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
-                              {this.state.gamesScheduleData.games.map(game => (
+                              {this.state.dailyGameSchedule.map(game => (
                                 <button 
                                     className="dropdown-item" 
                                     type="button"
@@ -106,7 +114,12 @@ class MlbMatchGame extends Component {
                               ))}
                               </div>
                             </div>
-                            <p>Next Available Play</p>
+                            
+                            <p>Current Game: {this.state.currentGameAwayTeam} at {this.state.currentGameHomeTeam}</p>
+                            <p>Current Inning: {this.state.currentInning}</p>
+                            <p>Current Half Inning: {this.state.currentHalfInning}</p>
+                            <p>Outs: {this.state.currentOuts}</p>
+                              
                             <div className="pull-right">
                                 <button
                                   onClick={this.pressPlay}
@@ -124,7 +137,7 @@ class MlbMatchGame extends Component {
                         </div>
                         
                         <div className="col border border-success rounded div3">
-                            <p>Last Play:</p>
+                           
                             <p>Last 10 Numbers:</p>
                             <p>Active Numbers:</p>
                         </div>

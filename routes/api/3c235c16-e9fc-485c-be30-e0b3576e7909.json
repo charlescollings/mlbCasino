@@ -1,4 +1,4 @@
-export default {
+{
     "game": {
         "id": "3c235c16-e9fc-485c-be30-e0b3576e7909",
         "status": "closed",
