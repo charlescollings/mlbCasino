@@ -5,14 +5,13 @@ import NoMatch from './pages/NoMatch';
 import Home from './pages/Home';
 import MlbMatchGame from './pages/mlbMatchGame';
 import Header from './components/Header'
-import GameBoard from './components/GameBoard';
+
 
 const App = () => (
   <Router>
-    <div>
-      <Header>MLB Casino</Header>
-      <GameBoard component={GameBoard}>
-      </GameBoard>
+    <div className="entirePage">
+      {/* <Header>MLB Casino</Header> */}
+
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/MlbMatchGame" component={MlbMatchGame} />

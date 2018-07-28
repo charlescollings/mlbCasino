@@ -1,34 +1,54 @@
 .wrapper {
     display: flex;
-    justify-content: space-evenly;
-
-    width: 100%;
+    flex-direction: column;   
     text-align: center;
-    font-size: 2rem;
-    color: #2A77AE;
     margin-bottom: 0px;
     background-color:red;
-    height: 500px;
+    background-image: url("https://usatftw.files.wordpress.com/2016/08/10-citi.jpg?w=1000&h=632");
+    background-size: cover;
+    width: 100%;
+    height: 800px;
   }
 
-  .insideDiv1 {
-    background-color: green;
-    margin: auto;
-    height: 300px;
-  }
+.titleBar {
+  display: flex;
+  justify-content: center;
+  font-size: 40px;
+  font-family: Parkavenue, cursive;
+  color: white;
+}
 
-  .insideDiv2 {
-    background-color: orange;
-    margin: auto;
-    height: 300px;
-  }
+.slogan {
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+  font-style: italic;
+  color: yellow;
+}
 
-  .insideDiv3 {
-    background-color:purple;
-    margin: auto;
-    height: 300px;
-  }
+.availGameCards {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+}
 
-  .gameRules {
-    background-color:white;
-  }
+.gameCard {
+  background-color: orange;
+  margin: auto;
+  height: 300px;
+  border-radius: 25px;
+  border: 2px solid green;
+  padding: 20px; 
+  width: 210px; 
+}
+
+.gameTitle {
+  text-align: center;
+  font-size: 20px;
+  color:black;
+}
+
+.gameImage {
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}

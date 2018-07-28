@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import "./Home.css";
 import { Link } from 'react-router-dom';
+import troutJersey from "../../images/mike-trout-1.jpg"
+import rouletteWheel from "../../images/roulette-wheel.jpg"
+import bingoCard from "../../images/bingo-card.jpg"
+import slotMachine from "../../images/slot-machine.jpg"
 
 class Home extends Component {
 
@@ -11,28 +15,74 @@ class Home extends Component {
 
     render() {
         return (
-            <div className="wrapper">
-                <p>wrapper</p>
-                <div className="insideDiv1">
-                    <div>
-                    <p>mlb match game</p>
-                    </div>
-                    <div>
-                    <Link to="/MlbMatchGame">
-                        <button className="btn btn-lg btn-danger">
-                            Enter mlb match game
-                        </button>
-                    </Link>
-                    </div>
-                    <div className="gameRules">
-                    short description of rules
-                    </div>
+            <div className="container-fluid wrapper">
+                <div className="row titleBar">
+                        <p>MLB Casino</p>
                 </div>
-                <div className="insideDiv2">
-                    mlb roulette
+                <div className="row slogan">
+                        <p>*where every live baseball game is your own personal casino*</p>
                 </div>
-                <div className="insideDiv3">
-                    mlb slots
+                <div className="row availGameCards">
+                    <div className="gameCard">
+                        <div className="gameTitle">
+                            <p>MLB Jersey Match</p>
+                        </div>
+                        <div>
+                            <img className="gameImage" alt="jersey" src={troutJersey} />
+                        </div>
+                        <div>
+                        <Link to="/MlbMatchGame">
+                            <button className="btn btn-med btn-danger">
+                                Enter Jersey Match
+                            </button>
+                        </Link>
+                        </div>
+                    </div>
+                    <div className="gameCard">
+                        <div className="gameTitle">
+                        <p>MLB Roulette</p>
+                        </div>
+                        <div>
+                            <img className="gameImage" alt="roulette wheel" src={rouletteWheel} />
+                        </div>
+                        <div>
+                        <Link to="/MlbMatchGame">
+                            <button className="btn btn-med btn-danger">
+                                Enter MLB Roulette
+                            </button>
+                        </Link>
+                        </div>
+                    </div>
+                    <div className="gameCard">
+                        <div className="gameTitle">
+                        <p>MLB Bingo</p>
+                        </div>
+                        <div>
+                            <img className="gameImage" alt="bingo card" src={bingoCard} />
+                        </div>
+                        <div>
+                        <Link to="/MlbMatchGame">
+                            <button className="btn btn-med btn-danger">
+                                Enter MLB Bingo
+                            </button>
+                        </Link>
+                        </div>
+                    </div>
+                    <div className="gameCard">
+                        <div className="gameTitle">
+                        <p>MLB Slots</p>
+                        </div>
+                        <div>
+                            <img className="gameImage" alt="slot machine" src={slotMachine} />
+                        </div>
+                        <div>
+                        <Link to="/MlbMatchGame">
+                            <button className="btn btn-med btn-danger">
+                                Enter MLB Slots
+                            </button>
+                        </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
