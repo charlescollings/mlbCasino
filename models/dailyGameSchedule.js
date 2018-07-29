@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // build out this model to contai the data I need
-const gamesScheduleSchema = new Schema({
+const dailyGameScheduleSchema = new Schema({
   _id: { type: String, required: false },
   homeTeam: { type: String, required: true },
   awayTeam: { type: String, required: true },
@@ -11,6 +11,6 @@ const gamesScheduleSchema = new Schema({
 { _id: false }
 );
 
-const GamesSchedule = mongoose.model("GamesSchedule", gamesScheduleSchema);
+const DailyGameSchedule = mongoose.model("DailyGameSchedule", dailyGameScheduleSchema);
 
-module.exports = GamesSchedule;
+module.exports = DailyGameSchedule;

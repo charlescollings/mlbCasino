@@ -1,5 +1,5 @@
 module.exports = {
     Games: require("./games"),
-    GamesSchedule: require("./gamesSchedule")
+    DailyGameSchedule: require("./dailyGameSchedule")
   };
   
