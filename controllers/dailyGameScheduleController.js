@@ -16,13 +16,12 @@ module.exports = {
     const url = "http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/schedule.json?api_key=bspcbjz7p2vffqrdj5ps4ftm";
     axios
       .get(url)
-      .then(res => {
-            console.log(res.data.games)
+      .then(result => {
+            res.json(result.data.games);
       })
-      .catch(err => res.status(422).json(err))
+      .catch(err => res.status(422).json(err));
   }
 }
-
 
       // axios
       //   .get("http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/21/schedule.json?api_key=bspcbjz7p2vffqrdj5ps4ftm")
