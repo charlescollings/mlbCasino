@@ -8,13 +8,13 @@ class MlbMatchGame extends Component {
         dealerNumber: 0,
         userNumber: 0,
         betResult: "No Bet",
-        winningPutoutJerseyNumber: 0,
+        winningPutoutJerseyNumber: null,
         dailyGameSchedule: [],
-        chosenGameInningsData: [],
+        inningsData: [],
         previousOutInGame: [],
         currentInning: 0,
-        currentGameHomeTeam: ['BOS'],
-        currentGameAwayTeam: ['NYY'],
+        homeTeam: ['BOS'],
+        awayTeam: ['NYY'],
         currentHalfInning: ["Top"],
         currentOuts: 0,
         nextOut: 1,
@@ -24,8 +24,8 @@ class MlbMatchGame extends Component {
     };
 
 
-    getData = (event) =>  {
-        event.preventDefault();
+    getData = () =>  {
+        // event.preventDefault();
         API.getDailyGameSchedule()
         .then(res => {
             this.setState({
@@ -36,71 +36,93 @@ class MlbMatchGame extends Component {
     }
 
 
-    loadGameData = (event, id) => {
+    loadGameData = (id) => {
         // event.preventDefault();
-        console.log(id);
         API.getGameInfo(id)
         .then(res => { 
-            var eventsLength = res.data.game.innings[res.data.game.innings.length-1].halfs[0].events.length
-            console.log(eventsLength)
-            var currentInning = res.data.game.innings.length-1;
+            if (res.data.game.innings.length > 1) {
+                var currentInning = res.data.game.innings.length-1;
+                var currentHalfInningPosition = res.data.game.innings[currentInning].halfs[1].events.length ? 1 : 0;
+                var atBatEventsLength = res.data.game.innings[currentInning].halfs[currentHalfInningPosition].events.length;
+                // var pitchEventsLength = res.data.game.innings[currentInning].halfs[currentHalfInningPosition].events[pitchEventsLength].count.outs;
+                
+                // if (res.data.game.innings[currentInning].halfs[currentHalfInningPosition].events[atBatEventsLength-1].at_bat.events[pitchEventsLength].hasOwnProperty('fielders')) {
+                //     var winningPutoutJerseyNumber = res.data.game.innings[currentInning].halfs[currentHalfInningPosition].events[atBatEventsLength-1].at_bat.events[pitchEventsLength].fielders[0].jersey_number;
+                // }
+                
+                this.setState({
+                    chosenGameId: res.data.game.id,
+                    homeScore: res.data.game.scoring.home.runs,
+                    awayScore: res.data.game.scoring.away.runs,
+                    inningsData: res.data.game.innings,
+                    homeTeam: res.data.game.scoring.home.abbr,
+                    awayTeam: res.data.game.scoring.away.abbr,
+                    currentInning: currentInning,
+                    currentHalfInning: res.data.game.innings[currentInning].halfs[1].events.length ? "Bottom" : "Top",
+                    currentHalfInningPosition: currentHalfInningPosition,
+                    // if event has length is true, do whats after ?, if false do whats after :
+                    // currentOuts: res.data.game.innings[currentInning].halfs[1].events.length ? res.data.game.innings[currentInning].halfs[1].events[res.data.game.innings[currentInning].halfs[1].events.length-1].at_bat.events[res.data.game.innings[currentInning].halfs[1].events[res.data.game.innings[currentInning].halfs[1].events.length-1].at_bat.events.length-1].count.outs : res.data.game.innings[currentInning].halfs[0].events[res.data.game.innings[currentInning].halfs[0].events.length-1].at_bat.events[res.data.game.innings[currentInning].halfs[0].events[res.data.game.innings[currentInning].halfs[0].events.length-1].at_bat.events.length-1].count.outs,
+                    currentOuts: res.data.game.innings[currentInning].halfs[currentHalfInningPosition].events[res.data.game.innings[currentInning].halfs[currentHalfInningPosition].events.length-1].at_bat.events[res.data.game.innings[currentInning].halfs[currentHalfInningPosition].events[res.data.game.innings[currentInning].halfs[currentHalfInningPosition].events.length-1].at_bat.events.length-1].count.outs, // : res.data.game.innings[currentInning].halfs[0].events[res.data.game.innings[currentInning].halfs[0].events.length-1].at_bat.events[res.data.game.innings[currentInning].halfs[0].events[res.data.game.innings[currentInning].halfs[0].events.length-1].at_bat.events.length-1].count.outs,
+                    // winningPutoutJerseyNumber: winningPutoutJerseyNumber,
+                }) 
+            } 
             this.setState({
                 chosenGameId: res.data.game.id,
-                homeScore: res.data.game.scoring.home.runs,
-                awayScore: res.data.game.scoring.away.runs,
-                chosenGameInningsData: res.data.game.innings,
-                currentGameHomeTeam: res.data.game.scoring.home.abbr,
-                currentGameAwayTeam: res.data.game.scoring.away.abbr,
-                currentInning: currentInning,
-                currentHalfInning: res.data.game.innings[currentInning].halfs[1].events.length ? "Bottom" : "Top",
-                // if event has length is true, do whats after ?, if false do whats after :
-                currentOuts: res.data.game.innings[currentInning].halfs[1].events.length ? res.data.game.innings[currentInning].halfs[1].events[res.data.game.innings[currentInning].halfs[1].events.length-1].at_bat.events[res.data.game.innings[currentInning].halfs[1].events[res.data.game.innings[currentInning].halfs[1].events.length-1].at_bat.events.length-1].count.outs : res.data.game.innings[currentInning].halfs[0].events[res.data.game.innings[currentInning].halfs[0].events.length-1].at_bat.events[res.data.game.innings[currentInning].halfs[0].events[res.data.game.innings[currentInning].halfs[0].events.length-1].at_bat.events.length-1].count.outs,
-                winningPutoutJerseyNumber: res.data.game.innings[1].halfs[0].events[1].at_bat.events[4].fielders[0].jersey_number
-
-            })          
+                homeTeam: res.data.game.scoring.home.abbr,
+                awayTeam: res.data.game.scoring.away.abbr,
+            })     
         })
           .catch(err => console.log(err));
     }
 
-    // pressPlay = (gameId) => {
-    //     this.loadGameData(gameId);
-    //     // event.preventDefault();
-    //     // generate randon number for user and dealer
-    //     const lastPutoutJerseyNumber = this.state.winningPutoutJerseyNumber
-    //     const randomUserNumber = Math.floor((Math.random() * 99) + 1);
-    //     const randomDealerNumber = Math.floor((Math.random() * 99) + 1);
-    //     // const gameNumber = Math.floor((Math.random() * 99) + 1);
-    //     this.setState({
-    //         dealerNumber: randomDealerNumber,
-    //         userNumber: randomUserNumber,
-    //         betResult: "Pending..."
-    //     });
-    //     setTimeout(() => {
-    //         this.loadGameData(this.state.chosenGameId);
-    //         if (lastPutoutJerseyNumber != this.state.winningPutoutJerseyNumber) {
-    //             this.setState({
-    //                 winningPutoutJerseyNumber: this.state.winningPutoutJerseyNumber
-    //             });
-    //             this.runGame(this.state.userNumber, this.state.dealerNumber, this.state.winningPutoutJerseyNumber);
-    //         }
-    //     }, 10000);
-// 
+    pressPlay = () => {
+        // e.preventDefault();
+        // this.loadGameData(this.state.chosenGameId)
+        console.log("pressPlay")
+        const lastPutoutJerseyNumber = this.state.winningPutoutJerseyNumber
+        const randomUserNumber = Math.floor((Math.random() * 99) + 1);
+        const randomDealerNumber = Math.floor((Math.random() * 99) + 1);
+        
+        this.setState({
+            winningPutoutJerseyNumber: null,
+            dealerNumber: randomDealerNumber,
+            userNumber: randomUserNumber,
+            betResult: "Pending...",
+            
+        });
+        setTimeout(() => {
+            this.runGame(this.state.userNumber, this.state.dealerNumber)
+        }, 5000);
+
         // setTimeout(() => {
-        // }, 3000);
-    // };
+            // this.loadGameData(gameId);
+            // if (lastPutoutJerseyNumber != this.state.winningPutoutJerseyNumber) {
+                // this.setState({
+                    // winningPutoutJerseyNumber: this.state.winningPutoutJerseyNumber
+                // });
+                // this.runGame(this.state.userNumber, this.state.dealerNumber, this.state.winningPutoutJerseyNumber);
+            // };
+        // }, 10000);
+    }
 
     // run this 5 seconds after press play is hit
-    runGame = (userNumber, dealerNumber, winningNumber) => {
+    runGame = (userNumber, dealerNumber) => {
+        const winningPutoutJerseyNumber = Math.floor((Math.random() * 99) + 1);
+        console.log(winningPutoutJerseyNumber);
+        console.log(userNumber);
+        console.log(dealerNumber);
         // var userWin = false;
-        if (Math.abs(userNumber - winningNumber) < Math.abs(dealerNumber - winningNumber)) {
-            var userWin = true;
+        if (Math.abs(userNumber - winningPutoutJerseyNumber) < Math.abs(dealerNumber - winningPutoutJerseyNumber)) {
+            let userWin = "You Won!";
             this.setState({
-                betResult: userWin.toString()
+                winningPutoutJerseyNumber: winningPutoutJerseyNumber,
+                betResult: userWin
             });
         } else {
-            userWin = false;
+            let userWin = "You lost";
             this.setState({
-                betResult: userWin.toString()
+                winningPutoutJerseyNumber: winningPutoutJerseyNumber,
+                betResult: userWin
             });
         }
     };
@@ -113,7 +135,7 @@ class MlbMatchGame extends Component {
                     className="dropdown-item" 
                     type="button"
                     key={game.id} 
-                    onClick={(event) => this.loadGameData(event, game.id)}
+                    onClick={() => this.loadGameData(game.id)}
                  >  
                  {game.away.abbr} at {game.home.abbr}                              
                  </button>
@@ -141,23 +163,25 @@ class MlbMatchGame extends Component {
                             </div>
                         </div>
                         <div className="mlbActiveGame">
-                            {this.state.currentGameAwayTeam} at {this.state.currentGameHomeTeam}
+                            <h2>{this.state.awayTeam} at {this.state.homeTeam}</h2>
                         </div>
                         <div className="activeMlbGameScore">
                             <h4><u>Score</u></h4>
-                            <h4>{this.state.currentGameAwayTeam} {this.state.awayScore}</h4>
-                            <h4>{this.state.currentGameHomeTeam} {this.state.homeScore}</h4>
+                            <h4>{this.state.awayTeam} {this.state.awayScore}</h4>
+                            <h4>{this.state.homeTeam} {this.state.homeScore}</h4>
 
                             <h4>Current Inning: {this.state.currentHalfInning} of {this.state.currentInning}</h4>
                             <h4>Current Outs: {this.state.currentOuts}</h4>
-                            <button 
-                                className="btn btn-secondary" 
-                                type="button"
-                                key={this.state.chosenGameId} 
-                                onClick={(event) => this.loadGameData(event, this.state.chosenGameId)}
-                             >  
-                             Refresh MLB Game Data                             
-                             </button>
+                            <div className="refreshButton">
+                                <button 
+                                    className="btn btn-secondary" 
+                                    type="button"
+                                    key={this.state.chosenGameId} 
+                                    onClick={(event) => this.loadGameData(event, this.state.chosenGameId)}
+                                 >  
+                                 Refresh MLB Game Data                             
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -166,16 +190,20 @@ class MlbMatchGame extends Component {
                             Jersey Match Game
                         </div>
                         <div className="nextAvailPlay container">
-                            <h2>{this.state.currentGameAwayTeam} at {this.state.currentGameHomeTeam}</h2>
+                            <h2>{this.state.awayTeam} at {this.state.homeTeam}</h2>
                             {/* <h6>Next Jersey Match Game starts in:</h6> */}
                             <h6>Next Jersey Match Game starts soon...</h6>
                             <div className="container playButtonPanel">
-                            <h5>{this.state.currentHalfInning} of {this.state.currentInning}, out# {this.state.currentOuts+1}</h5>
+                                <div className="nextGame">
+                                    <p>Next Game:</p>
+                                </div>
+                                <h5>{this.state.currentHalfInning} of {this.state.currentInning}, out# {this.state.currentOuts+1}</h5>
                                 <div className="pull-right playButton">
                                     <button
-                                      // onClick={this.pressPlay(this.state.chosenGameId)}
-                                      type="submit"
-                                      className="btn btn-lg btn-success"
+                                        type="button"
+                                        onClick={this.pressPlay}
+                                        // onClick={this.pressPlay(this.state.chosenGameId)} 
+                                        className="btn btn-lg btn-success"
                                     >
                                       <p>Click to Play</p>
                                     </button>
@@ -187,13 +215,14 @@ class MlbMatchGame extends Component {
                                 <h4>Active Jersey Match Game</h4>
                             </div>
                             <div className="row gameNumbers">
-                                <h5>{this.state.currentGameAwayTeam} at {this.state.currentGameHomeTeam}: {this.state.currentHalfInning} of {this.state.currentInning}, out# {this.state.currentOuts+1}</h5>
-
+                                <div className="gamePanelHeading">
+                                    <h5>{this.state.awayTeam} at {this.state.homeTeam}: {this.state.currentHalfInning} of {this.state.currentInning}, out# {this.state.currentOuts+1}</h5>
+                                </div>
                                 <div className="col">
                                     <h6>Your number {this.state.userNumber}</h6>
                                 </div>
                                 <div className="col">
-                                    <h6>Winning Jersey # {this.state.userGameWinningNumber}</h6>
+                                    <h6>Winning Jersey # {this.state.winningPutoutJerseyNumber}</h6>
                                 </div>
                                 <div className="col">
                                     <h6>Dealer Number {this.state.dealerNumber}</h6>
